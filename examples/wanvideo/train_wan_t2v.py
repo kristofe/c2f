@@ -554,17 +554,6 @@ def parse_args():
         help="Pretrained LoRA path. Required if the training is resumed.",
     )
     parser.add_argument(
-        "--use_swanlab",
-        default=False,
-        action="store_true",
-        help="Whether to use SwanLab logger.",
-    )
-    parser.add_argument(
-        "--swanlab_mode",
-        default=None,
-        help="SwanLab mode (cloud or local).",
-    )
-    parser.add_argument(
         "--control_layers",
         type=int,
         default=15,
@@ -633,20 +622,7 @@ def train(args):
         pretrained_lora_path=args.pretrained_lora_path,
         control_layers=args.control_layers,
     )
-    if args.use_swanlab:
-        from swanlab.integration.pytorch_lightning import SwanLabLogger
-        swanlab_config = {"UPPERFRAMEWORK": "DiffSynth-Studio"}
-        swanlab_config.update(vars(args))
-        swanlab_logger = SwanLabLogger(
-            project="wan", 
-            name="wan",
-            config=swanlab_config,
-            mode=args.swanlab_mode,
-            logdir=os.path.join(args.output_path, "swanlog"),
-        )
-        logger = [swanlab_logger]
-    else:
-        logger = None
+    logger = None
     trainer = pl.Trainer(
         max_epochs=args.max_epochs,
         accelerator="gpu",
@@ -662,6 +638,26 @@ def train(args):
 
 
 if __name__ == '__main__':
+
+    # DEBUG HACK - remove later
+    import sys
+    sys.argv = [
+        sys.argv[0],
+        "--task", "train",
+        "--train_architecture", "full",
+        "--dataset_path", "data_r10k",
+        "--output_path", "./",
+        "--dit_path", "Wan2.1-T2V-1.3B/diffusion_pytorch_model.safetensors",
+        "--steps_per_epoch", "500",
+        "--max_epochs", "1000",
+        "--learning_rate", "4e-5",
+        "--accumulate_grad_batches", "1",
+        "--use_gradient_checkpointing",
+        "--dataloader_num_workers", "8",
+        "--control_layers", "15",
+    ]
+    # END DEBUG HACK
+
     args = parse_args()
     if args.task == "data_process":
         data_process(args)
