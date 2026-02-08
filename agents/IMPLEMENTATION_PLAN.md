@@ -204,6 +204,8 @@ The following agents are designed to be placed in `.claude/agents/` and invoked 
 | `inference` | Inference pipeline + conditioning control | Sonnet | Read, Write, Bash |
 | `integration` | Wan2.1 + WanControl + DiffSynth setup | Sonnet | Read, Write, Bash |
 | `validator` | Checks code against paper + runs tests | Opus | Read, Bash |
+| `purity` | enforces that only the paper's way of doing things is in the code | Opus | Read, Bash |
+| `simplicity` | Ensures the code doesn't add any uncessary fallbacks or alternative implementatins, doesn't hide failures| Opus | Read, Bash |
 
 ### Usage Pattern
 

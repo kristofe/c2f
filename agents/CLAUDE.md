@@ -25,6 +25,8 @@ See `agents/` for specialized agents. Key agents:
 - `c2r-training` — two-phase training
 - `c2r-data-pipeline` — dataset construction
 - `c2r-integration` — environment setup
+- `c2r-simplicity` — ensures code is simple, doesn't include fallbacks or handles errors 
+- `c2r-purity` — ensures code is adheres stricly to the paper 
 
 ## Implementation Order
 1. Environment setup (integration agent)
