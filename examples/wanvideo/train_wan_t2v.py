@@ -631,7 +631,7 @@ def train(args):
         strategy=args.training_strategy,
         default_root_dir=args.output_path,
         accumulate_grad_batches=args.accumulate_grad_batches,
-        callbacks=[pl.pytorch.callbacks.ModelCheckpoint(save_top_k=-1)],
+        callbacks=[pl.pytorch.callbacks.ModelCheckpoint(save_top_k=3)],
         logger=logger,
     )
     trainer.fit(model, dataloader)

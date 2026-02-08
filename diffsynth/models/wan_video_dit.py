@@ -351,7 +351,8 @@ class WanModel(torch.nn.Module):
         x, (f, h, w) = self.patchify(x) # x [1, 16, 1, 60, 104]->[1, 1560, 1536], 1 30 52
         # Control Input
         x_c, (_, _, _) = self.patchify(x_c)
-        
+
+        #ROPE stuff 
         freqs = torch.cat([ # self.freqs[0]:[1024, 22] self.freqs[1]:[1024, 21] self.freqs[2]:[1024, 21]
             self.freqs[0][:f].view(f, 1, 1, -1).expand(f, h, w, -1),
             self.freqs[1][:h].view(1, h, 1, -1).expand(f, h, w, -1),
@@ -397,8 +398,8 @@ class WanModel(torch.nn.Module):
             else:
                 x = block(x, context, t_mod, freqs)
                 if idx < self.control_layers:
-                    x_c = self.control_blocks[idx](x_c, context, t_mod, freqs)
-                    x = x + self.control_blocks[idx].zero_linear(x_c)
+                    x_c = self.control_blocks[idx](x_c, context, t_mod, freqs) #x_c is needed for next block
+                    x = x + self.control_blocks[idx].zero_linear(x_c) # before injecting control signal pass through zero_linear
 
         # Output head
         x = self.head(x, t) # x: [1, 1560, 1536]  t: [1, 1536] ->  x: [1, 1560, 64]
