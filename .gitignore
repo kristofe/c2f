@@ -1,2 +1,6 @@
 data_r10k/
-Wan2.1-T2V-14B/
+Wan2.1-T2V-1.3B/
+__pycache__/
+*.log
+*.pyc
+.vscode/

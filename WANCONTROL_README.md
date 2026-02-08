@@ -69,7 +69,7 @@ modelscope download Wan-AI/Wan2.1-T2V-1.3B --local_dir your/model/path/Wan2.1-T2
 Download models using huggingface-cli:
 ```
 pip install "huggingface_hub[cli]"
-huggingface-cli download Wan-AI/Wan2.1-T2V-14B --local-dir ./Wan2.1-T2V-14B
+huggingface-cli download Wan-AI/Wan2.1-T2V-1.3B --local-dir ./Wan2.1-T2V-1.3B
 ```
 
 Ensure the following checkpoints are available in the specified paths:
@@ -84,12 +84,12 @@ Ensure the following checkpoints are available in the specified paths:
 Run the preprocessing script to prepare the data for training:
 
 ```bash
-CUDA_VISIBLE_DEVICES="0" python examples/wanvideo/train_wan_t2v.py \
+  CUDA_VISIBLE_DEVICES="0" python examples/wanvideo/train_wan_t2v.py \
   --task data_process \
-  --dataset_path data/example_dataset \
+  --dataset_path data_r10k \
   --output_path ./models \
-  --text_encoder_path "your/model/path/Wan2.1-T2V-1.3B/models_t5_umt5-xxl-enc-bf16.pth" \
-  --vae_path "your/model/path/Wan2.1-T2V-1.3B/Wan2.1_VAE.pth" \
+  --text_encoder_path "Wan2.1-T2V-1.3B/models_t5_umt5-xxl-enc-bf16.pth" \
+  --vae_path "Wan2.1-T2V-1.3B/Wan2.1_VAE.pth" \
   --tiled \
   --num_frames 81 \
   --height 480 \
@@ -120,9 +120,9 @@ To train the model with ControlNet, run the following command:
 python examples/wanvideo/train_wan_t2v.py \
   --task train \
   --train_architecture full \
-  --dataset_path data/example_dataset \
+  --dataset_path data_r10k \
   --output_path ./ \
-  --dit_path "your/model/path/Wan2.1-T2V-1.3B/diffusion_pytorch_model.safetensors" \
+  --dit_path "Wan2.1-T2V-1.3B/diffusion_pytorch_model.safetensors" \
   --steps_per_epoch 500 \
   --max_epochs 1000 \
   --learning_rate 4e-5 \
